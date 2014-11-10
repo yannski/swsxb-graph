@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          <% @result_rows.each_with_index{|row, index| %>
+          <% if index == 0 %>
+          [<%= row.map{|x| "'#{x}'"}.join(", ") %>],
+          <% else %>
+          ['j-<%= 66+1-index %>', <%= row.join(", ") %>]<%= index != (@result_rows.size-1) ? "," : "" %>
+          <% end %>
+          <% } %>
+        ]);
+
+        var options = {
+          title: 'Startup Weekend Strasbourg'
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 500px; height: 500px;"></div>
+  </body>
+</html>
